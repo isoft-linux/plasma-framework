@@ -34,3 +34,7 @@ See @ref libplasma.
 ## Script engines
 Provides support to create applets or containments in various scripting languages.
 
+## Lunar
+![Lunar Calendar](https://raw.github.com/isoft-linux/plasma-framework/lunar/docs/lunar-calendar.png)
+
+![Lunar Date](https://raw.github.com/isoft-linux/plasma-framework/lunar/docs/lunar-date.png)
