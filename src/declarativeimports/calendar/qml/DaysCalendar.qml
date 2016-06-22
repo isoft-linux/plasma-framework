@@ -297,6 +297,10 @@ Item {
         property bool containsEventItems: false // FIXME
         property bool containsTodoItems: false // FIXME
 
+        property alias tip: tip
+        property alias text: tip.text
+        property int mouseOnIndex: -1
+
         Repeater {
             id: days
 
@@ -330,6 +334,12 @@ Item {
                     }
                 }
             }
+        }
+
+        ToolTip {
+            id: tip
+            color: "#dd5b5b5b"
+            textColor: theme.backgroundColor
         }
     }
 }

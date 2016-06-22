@@ -9,7 +9,12 @@ set(calendar_SRCS
     daysmodel.cpp
     eventdatadecorator.cpp
     eventpluginsmanager.cpp
+    lunar.cpp
 )
+
+pkg_search_module(LUNARDATA REQUIRED lunar-date-2.0)
+
+include_directories(${LUNARDATA_INCLUDE_DIRS})
 
 add_library(calendarplugin SHARED ${calendar_SRCS})
 
@@ -20,6 +25,7 @@ target_link_libraries(calendarplugin
     Qt5::Gui
     KF5::I18n
     KF5::CalendarEvents
+    ${LUNARDATA_LIBRARIES}
 )
 
 install(TARGETS calendarplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/plasma/calendar)

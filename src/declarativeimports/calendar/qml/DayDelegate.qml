@@ -132,4 +132,53 @@ MouseArea {
             ColorAnimation { duration: units.shortDuration * 2 }
         }
     }
+
+    Lunar {
+        id: lunar
+        year: thisDate.getFullYear()
+        month: thisDate.getMonth()
+        day: model.label || dayNumber
+    }
+
+    Rectangle {
+         width: 5
+         height: width
+         x: 5
+         y: 5
+         color: theme.highlightColor
+         border.color: theme.highlightColor
+         border.width: 1
+         radius: width * 0.5
+         visible: lunar.festival.length > 0 && dateMatchingPrecision >= Calendar.MatchYearMonthAndDay
+    }
+
+    Timer {
+        id: showTimer
+
+        readonly property bool day: dateMatchingPrecision >= Calendar.MatchYearMonthAndDay ? true : false
+
+        interval: 1000
+        running: (day && dayStyle.containsMouse && !calendarGrid.tip.visible)
+        onTriggered: {
+            var column = index % 7
+            var cellwidth = root.borderWidth + daysCalendar.cellWidth
+            calendarGrid.mouseOnIndex = index
+            calendarGrid.tip.text = lunar.text
+            var tipOverCell = Math.round(tip.width / cellwidth)
+            var boundCell = 7 - tipOverCell
+            var alignment = column < boundCell ? column : boundCell
+            calendarGrid.tip.show()
+            calendarGrid.tip.x = alignment * cellwidth
+            calendarGrid.tip.y = y
+        }
+    }
+
+    Timer {
+        id: hideTimer
+        interval: 100 // ms before the tip is hidden
+        running: index == calendarGrid.mouseOnIndex && !dayStyle.containsMouse && calendarGrid.tip.visible
+        onTriggered: calendarGrid.tip.hide(); // this is the js code that hides the tip.
+                                              // you could also use visible=false; if you
+                                              // don't need animations
+    }
 }

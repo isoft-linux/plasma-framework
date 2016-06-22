@@ -20,6 +20,8 @@
 #include "calendarplugin.h"
 #include "calendardata.h"
 #include "calendar.h"
+#include "lunar.h"
+
 #include "eventdatadecorator.h"
 #include "eventpluginsmanager.h"
 
@@ -42,6 +44,7 @@ void CalendarPlugin::registerTypes(const char *uri)
     Q_ASSERT(uri == QLatin1String("org.kde.plasma.calendar"));
     qmlRegisterType<CalendarData>(uri, 2, 0, "CalendarData");
     qmlRegisterType<Calendar>(uri, 2, 0, "Calendar");
+    qmlRegisterType<Lunar>(uri, 2, 0, "Lunar");
     qmlRegisterType<QAbstractItemModel>();
     qmlRegisterType<QAbstractListModel>();
     qmlRegisterSingletonType<EventPluginsManager>(uri, 2, 0, "EventPluginsManager", event_plugins_manager_provider);
