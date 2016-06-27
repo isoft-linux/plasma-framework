@@ -60,11 +60,19 @@ MouseArea {
         return result
     }
 
+    property QtObject lunar: Qt.createQmlObject('import org.kde.plasma.calendar 2.0; Lunar { year: ' + thisDate.getFullYear() + '; month: ' + thisDate.getMonth() + ' }', dayStyle, 'lunarObject');
+
     onHeightChanged: {
         // this is needed here as the text is first rendered, counting with the default root.cellHeight
         // then root.cellHeight actually changes to whatever it should be, but the Label does not pick
         // it up after that, so we need to change it explicitly after the cell size changes
         label.font.pixelSize = Math.max(theme.smallestFont.pixelSize, Math.floor(daysCalendar.cellHeight / 3))
+    }
+
+    Component.onCompleted: {
+        if (lunar) {
+            lunar.day = model.label || dayNumber;
+        }
     }
 
     Rectangle {
@@ -133,13 +141,6 @@ MouseArea {
         }
     }
 
-    Lunar {
-        id: lunar
-        year: thisDate.getFullYear()
-        month: thisDate.getMonth()
-        day: model.label || dayNumber
-    }
-
     Rectangle {
          width: 5
          height: width
@@ -149,7 +150,7 @@ MouseArea {
          border.color: theme.highlightColor
          border.width: 1
          radius: width * 0.5
-         visible: lunar.festival.length > 0 && dateMatchingPrecision >= Calendar.MatchYearMonthAndDay
+         visible: lunar ? lunar.festival.length > 0 && dateMatchingPrecision >= Calendar.MatchYearMonthAndDay : dateMatchingPrecision >= Calendar.MatchYearMonthAndDay
     }
 
     Timer {
@@ -163,7 +164,7 @@ MouseArea {
             var column = index % 7
             var cellwidth = root.borderWidth + daysCalendar.cellWidth
             calendarGrid.mouseOnIndex = index
-            calendarGrid.tip.text = lunar.text
+            calendarGrid.tip.text = lunar ? lunar.text : ""
             var tipOverCell = Math.round(tip.width / cellwidth)
             var boundCell = 7 - tipOverCell
             var alignment = column < boundCell ? column : boundCell

@@ -115,6 +115,14 @@ else()
     set(HAVE_GLX 0)
 endif()
 
+find_package(PkgConfig REQUIRED)
+pkg_search_module(LUNARDATE  lunar-date-2.0)
+set(HAVE_LUNARDATE FALSE)
+if(LUNARDATE_FOUND)
+    add_definitions(-DHAVE_LUNARDATE)
+    set(HAVE_LUNARDATE TRUE)
+endif()
+
 #########################################################################
 
 add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0)
